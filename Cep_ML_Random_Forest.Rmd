@@ -1,0 +1,21 @@
+---
+title: "Data Prep for Cep OB3b ML Projects"
+author: "Thomas Allen"
+date: "9/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(infer)
+
+cep <- read_csv("~/Data/Astronomy/Cep_ML_Data.csv")
+```
+
+
+
+
+
+

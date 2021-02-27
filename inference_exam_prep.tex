@@ -1,0 +1,1590 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Data Wrangling and Visualization},
+            pdfauthor={Thomas Allen},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Data Wrangling and Visualization}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Thomas Allen}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{9/30/2020}
+
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{within_radius_of_point <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(df,point,radius) \{}
+  
+  \CommentTok{# df : dataframe with RA and Dec columns (Decimal Degrees)}
+  
+  \CommentTok{# point : 2-element vector with center point RA and Dec (Decimal Degrees)}
+  
+  \CommentTok{# radius : radius to search within (Arcseconds)}
+  
+  
+\NormalTok{df <-}\StringTok{  }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{new_column_distance =} \KeywordTok{sqrt}\NormalTok{( ((point[}\DecValTok{1}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{RA) }\OperatorTok{*}\StringTok{ }\FloatTok{3600.} \OperatorTok{*}\StringTok{ }\KeywordTok{cos}\NormalTok{((pi}\OperatorTok{/}\FloatTok{180.}\NormalTok{)}\OperatorTok{*}\NormalTok{Dec))}\OperatorTok{^}\DecValTok{2}   \OperatorTok{+}\StringTok{  }\NormalTok{((Dec}\OperatorTok{-}\NormalTok{point[}\DecValTok{2}\NormalTok{]) }\OperatorTok{*}\StringTok{ }\FloatTok{3600.}\NormalTok{)}\OperatorTok{^}\DecValTok{2}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{new_column =} \KeywordTok{if_else}\NormalTok{(new_column_distance }\OperatorTok{<}\StringTok{ }\NormalTok{radius,}\StringTok{"yes"}\NormalTok{, }\StringTok{"no"}\NormalTok{))}
+  
+\NormalTok{df}
+  
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"~/Websites/Working/thomas-s-allen 2/cep_tutorial/data/J.ApJ.750.125.ysos_2MASS_GAIA_raw.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Duplicated column names deduplicated: 'angDist' =>
+## 'angDist_1' [2], 'RAJ2000' => 'RAJ2000_1' [24], 'DEJ2000' =>
+## 'DEJ2000_1' [25], 'Jmag' => 'Jmag_1' [29], 'Hmag' => 'Hmag_1' [30],
+## 'errHalfMaj' => 'errHalfMaj_1' [41], 'errHalfMin' => 'errHalfMin_1' [42],
+## 'errPosAng' => 'errPosAng_1' [43]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_double(),
+##   RAJ2000 = col_character(),
+##   DEJ2000 = col_character(),
+##   Cl = col_character(),
+##   Note = col_character(),
+##   M07 = col_integer(),
+##   `2M` = col_character(),
+##   Simbad = col_character(),
+##   `2MASS` = col_character(),
+##   errPosAng = col_integer(),
+##   Qfl = col_character(),
+##   Rfl = col_integer(),
+##   X = col_integer(),
+##   errPosAng_1 = col_integer(),
+##   duplicated_source = col_integer(),
+##   rv_nb_transits = col_integer()
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{nrow}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2569
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#east_center <- c(344.2083, 62.6656)}
+\NormalTok{east_center <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{344.2060000}\NormalTok{, }\FloatTok{62.6654278}\NormalTok{)}
+\NormalTok{west_center <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\FloatTok{343.4625}\NormalTok{, }\FloatTok{62.5936}\NormalTok{)}
+
+\NormalTok{radius <-}\StringTok{ }\FloatTok{300.}
+
+\NormalTok{df }\OperatorTok{%>%}\StringTok{ }\KeywordTok{distinct}\NormalTok{(Note)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 1
+##   Note 
+##   <chr>
+## 1 X-ray
+## 2 <NA>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{parallax_conversion <-}\StringTok{ }\DecValTok{10}\OperatorTok{^}\DecValTok{3} \CommentTok{# milli arcseconds to arcseconds}
+
+\NormalTok{cols_to_keep <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}
+                  \StringTok{"RA"}\NormalTok{,}
+                  \StringTok{"Dec"}\NormalTok{,}
+                  \StringTok{"Type"}\NormalTok{,}
+                  \StringTok{"Band1"}\NormalTok{,}
+                  \StringTok{"Band2"}\NormalTok{,}
+                  \StringTok{"Band3"}\NormalTok{,}
+                  \StringTok{"Band4"}\NormalTok{,}
+                  \StringTok{"Band5"}\NormalTok{,}
+                  \StringTok{"Band6"}\NormalTok{,}
+                  \StringTok{"Band7"}\NormalTok{,}
+                  \StringTok{"Band8"}\NormalTok{,}
+                  \StringTok{"Band9"}\NormalTok{,}
+                  \StringTok{"Band10"}\NormalTok{,}
+                  \StringTok{"Dust"}\NormalTok{,}
+                  \StringTok{"Xray"}\NormalTok{,}
+                  \StringTok{"parallax"}\NormalTok{,}
+                  \StringTok{"parallax_error"}\NormalTok{,}
+                  \StringTok{"pmra"}\NormalTok{,}
+                  \StringTok{"pmra_error"}\NormalTok{,}
+                  \StringTok{"pmdec"}\NormalTok{,}
+                  \StringTok{"pmdec_error"}\NormalTok{,}
+                  \StringTok{"teff_val"}\NormalTok{,}
+                  \StringTok{"a_g_val"}\NormalTok{,}
+                  \StringTok{"radius_val"}\NormalTok{,}
+                  \StringTok{"lum_val"}
+\NormalTok{                  )}
+
+
+\NormalTok{df <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{V-I}\StringTok{`}\NormalTok{ =}\StringTok{ }\NormalTok{Vmag}\OperatorTok{-}\StringTok{`}\DataTypeTok{V-I}\StringTok{`}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Cl =} \KeywordTok{fct_recode}\NormalTok{(Cl,}\StringTok{"no disk"}\NormalTok{=}\StringTok{"III"}\NormalTok{,}\StringTok{"disk"}\NormalTok{=}\StringTok{"II"}\NormalTok{,}\StringTok{"disk"}\NormalTok{=}\StringTok{"TD"}\NormalTok{,}\StringTok{"envelope"}\NormalTok{=}\StringTok{"I"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Note =} \KeywordTok{case_when}\NormalTok{(Note}\OperatorTok{==}\StringTok{"x-ray"} \OperatorTok{~}\StringTok{ "yes"}\NormalTok{,}
+                            \KeywordTok{is.na}\NormalTok{(Note)}\OperatorTok{==}\OtherTok{TRUE} \OperatorTok{~}\StringTok{ "no"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{rename}\NormalTok{(}
+    \DataTypeTok{RA =} \StringTok{`}\DataTypeTok{_RAJ2000}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Dec =} \StringTok{`}\DataTypeTok{_DEJ2000}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Type =}\NormalTok{ Cl,}
+    \DataTypeTok{Band1 =}\NormalTok{ Vmag,}
+    \DataTypeTok{Band2 =} \StringTok{`}\DataTypeTok{V-I}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Band3 =}\NormalTok{ Jmag,}
+    \DataTypeTok{Band4 =}\NormalTok{ Hmag,}
+    \DataTypeTok{Band5 =}\NormalTok{ Ksmag,}
+    \DataTypeTok{Band6 =} \StringTok{`}\DataTypeTok{[3.6]}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Band7 =} \StringTok{`}\DataTypeTok{[4.5]}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Band8 =} \StringTok{`}\DataTypeTok{[5.8]}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Band9 =} \StringTok{`}\DataTypeTok{[8.0]}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Band10 =} \StringTok{`}\DataTypeTok{[24]}\StringTok{`}\NormalTok{,}
+    \DataTypeTok{Xray =}\NormalTok{ Note,}
+    \DataTypeTok{Dust =}\NormalTok{ AKs}
+\NormalTok{  ) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(cols_to_keep) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\CommentTok{#filter(Type %in% c("Disk","No Disk")) %>% }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Distance =} \DecValTok{1}\OperatorTok{/}\StringTok{ }\NormalTok{(parallax}\OperatorTok{/}\NormalTok{parallax_conversion)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Distance }\OperatorTok{>}\StringTok{ }\DecValTok{0}\NormalTok{,}
+\NormalTok{         Distance }\OperatorTok{<}\StringTok{ }\DecValTok{10000}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{within_radius_of_point}\NormalTok{(east_center,radius) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{east_cluster =}\NormalTok{ new_column) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{new_column) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{within_radius_of_point}\NormalTok{(west_center,radius) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{west_cluster =}\NormalTok{ new_column) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{new_column) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Region =} \KeywordTok{if_else}\NormalTok{(east_cluster}\OperatorTok{==}\StringTok{"yes"}\NormalTok{,}\StringTok{"east"}\NormalTok{,}\KeywordTok{if_else}\NormalTok{(west_cluster}\OperatorTok{==}\StringTok{"yes"}\NormalTok{,}\StringTok{"west"}\NormalTok{,}\StringTok{"halo"}\NormalTok{))) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{new_column_distance,}\OperatorTok{-}\NormalTok{east_cluster,}\OperatorTok{-}\NormalTok{west_cluster)}
+
+\NormalTok{df}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2,166 x 27
+##       RA   Dec Type   Band1 Band2 Band3 Band4 Band5 Band6 Band7 Band8 Band9
+##    <dbl> <dbl> <fct>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+##  1  344.  62.6 no di~  15.1  13.3  12.1  11.6  11.4  11.2  11.2  11.2  11.2
+##  2  344.  62.8 no di~  17.6  15.2  13.8  13.2  12.9  12.7  12.7  12.6  12.7
+##  3  344.  62.7 no di~  15.9  13.8  12.0  11.2  10.9  10.8  10.8  10.7  10.7
+##  4  344.  62.6 no di~  20.2  17.1  15.0  14.1  13.7  13.4  13.4  13.2  13.3
+##  5  344.  62.5 no di~  18.8  16.1  14.1  13.2  12.9  12.7  12.6  12.6  12.5
+##  6  344.  62.4 no di~  19.6  16.4  14.2  13.3  13.0  12.6  12.6  12.4  11.8
+##  7  344.  62.6 no di~  22.2  18.1  15.8  14.8  14.3  14.0  13.9  14.0  13.9
+##  8  344.  62.5 no di~  19.4  15.9  13.2  12.0  11.6  11.2  11.2  11.1  11.2
+##  9  344.  62.4 no di~  21.2  17.5  14.7  13.5  13.1  12.7  12.7  12.7  12.6
+## 10  344.  62.5 no di~  20.1  16.9  14.6  13.5  13.2  13.0  12.9  12.9  13.0
+## # ... with 2,156 more rows, and 15 more variables: Band10 <dbl>,
+## #   Dust <dbl>, Xray <chr>, parallax <dbl>, parallax_error <dbl>,
+## #   pmra <dbl>, pmra_error <dbl>, pmdec <dbl>, pmdec_error <dbl>,
+## #   teff_val <dbl>, a_g_val <dbl>, radius_val <dbl>, lum_val <dbl>,
+## #   Distance <dbl>, Region <chr>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#write_csv(df, file="/Desktop/exam_prep.csv")}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{problem-1}{%
+\subsection{Problem 1}\label{problem-1}}
+
+We are interested in exploring whether the presence (or lack thereof) of
+a protoplanetary disk around a young star depends on the location of
+that star in its birth cluster. In this dataset, the \texttt{Region}
+variable gives the location of the stars in the cluster as ``east'',
+``west'' and ``halo''. And the \texttt{Type} variable states disk
+presence as ``disk'', ``no disk'' and ``envelope''. You can either
+include cases of \texttt{Type} ``envelope'' with the ``disk'' cases or
+ignore them. For this problem:
+
+\begin{itemize}
+\tightlist
+\item
+  Perform an exploratory data analysis, choosing an appropriate
+  visualization and table.
+\item
+  Consider two cases, first, just the ``east'' and ``west'' categories
+  in \texttt{Region} and second, all three categories in
+  \texttt{Region}: ``east,''west" and ``halo''. By both choosing an
+  appropriate probability model and using a computational method with
+  \texttt{infer()}, for each case:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Calculate an appropriate point estimate and construct a
+    \(95\%\)-confidence interval around your point estimate. For the
+    case of more than two categories, discuss the appropriatness of a
+    confidence interval.
+  \item
+    Formulate null and alternative hypotheses and construct a hypothesis
+    test, calculate a p-value and draw a conclusion.
+  \item
+    Discuss the relevent criteria for each approach and whether the data
+    conform to the criteria.
+  \end{itemize}
+\end{itemize}
+
+\textbf{Note:} After using the \texttt{filter()} function, it may be
+useful to use \texttt{fct\_drop()} to ensure any categories with a 0
+count are dropped.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{exploratory-data-analysis}{%
+\subsubsection{Exploratory Data
+Analysis}\label{exploratory-data-analysis}}
+
+First, we want to explore our data. Create a useful table and
+visualization to show the relationship between \texttt{Type} and
+\texttt{Region}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_counts <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{ }\CommentTok{# filter(Xray=="yes",}
+\StringTok{ }\CommentTok{#       Type %in% c("Disk","No Disk")) %>% }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{         }\CommentTok{#Subcluster %in% c("east","west")) %>% }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Region,Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{counts=}\KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{freq=}\NormalTok{counts}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(counts))}
+
+\NormalTok{df_counts}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 4
+## # Groups:   Region [3]
+##   Region Type    counts  freq
+##   <chr>  <fct>    <int> <dbl>
+## 1 east   disk       192 0.444
+## 2 east   no disk    240 0.556
+## 3 halo   disk       507 0.353
+## 4 halo   no disk    929 0.647
+## 5 west   disk       159 0.543
+## 6 west   no disk    134 0.457
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_counts }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Region,}\DataTypeTok{y=}\NormalTok{counts,}\DataTypeTok{fill=}\NormalTok{Type)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_col}\NormalTok{(}\DataTypeTok{position=}\StringTok{"fill"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{inference_exam_prep_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\hypertarget{two-categories}{%
+\subsubsection{Two Categories}\label{two-categories}}
+
+\hypertarget{confidence-intervals}{%
+\paragraph{Confidence intervals}\label{confidence-intervals}}
+
+Now just consider the regions ``east'' and ``west''. For eash region
+estimate the proportion of stars with a protoplanetary disk and
+determine \(95\%\) confidence intervals.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{approximation-with-probability-models}{%
+\subparagraph{Approximation with probability
+models}\label{approximation-with-probability-models}}
+
+The confidence interval around a single proportion point estimate is \[
+\begin{aligned}
+\hat{p} & \pm MOE \\
+\hat{p} & \pm z^{*} \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}
+\end{aligned}
+\] For the ``east'' region, since there are 192 stars with a disk and
+240 without, \(\hat{p} = \frac{192}{192 + 240} = 0.44\): \[
+\begin{aligned}
+\hat{p_{east}} & \pm z^{*} \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \\
+0.44 & \pm 1.96 \times \sqrt{\frac{0.44(1-0.44)}{432}} \\
+0.44 & \pm 0.05
+\end{aligned}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FloatTok{1.96} \OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{( (}\FloatTok{0.44} \OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\FloatTok{0.44}\NormalTok{)) }\OperatorTok{/}\StringTok{ }\DecValTok{432}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.04680956
+\end{verbatim}
+
+And for the ``west'' region, since there are 159 stars with a disk and
+134 without, \(\hat{p} = \frac{159}{159 + 134} = 0.54\): \[
+\begin{aligned}
+\hat{p_{west}} & \pm z^{*} \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \\
+0.54 & \pm 1.96 \times \sqrt{\frac{0.54(1-0.54)}{293}} \\
+0.54 & \pm 0.06
+\end{aligned}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FloatTok{1.96} \OperatorTok{*}\StringTok{ }\KeywordTok{sqrt}\NormalTok{( (}\FloatTok{0.54} \OperatorTok{*}\StringTok{ }\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\FloatTok{0.54}\NormalTok{)) }\OperatorTok{/}\StringTok{ }\DecValTok{293}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.05706871
+\end{verbatim}
+
+Therefore, we think that a plausable range of values that contain the
+popultation porportion in the east region is, \(p_{east}\), is
+\(0.39 - 0.49\), and for the west, \(p_{west}\), is \(0.48 - 0.6\).
+
+\hypertarget{computational-method-with-infer}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer}}
+
+We will use \texttt{infer} to construct bootstrap estimations of the
+sampling distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# First }
+
+\NormalTok{df_two <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Region }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"east"}\NormalTok{,}\StringTok{"west"}\NormalTok{),}
+\NormalTok{         Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Region=}\KeywordTok{factor}\NormalTok{(Region),}
+         \DataTypeTok{Type=}\KeywordTok{factor}\NormalTok{(Type))}
+
+\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Region, Type) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{count =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{fct_drop}\NormalTok{(Type))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 3
+## # Groups:   Region [2]
+##   Region Type    count
+##   <fct>  <fct>   <int>
+## 1 east   disk      192
+## 2 east   no disk   240
+## 3 west   disk      159
+## 4 west   no disk   134
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# east}
+\NormalTok{prop_east <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Region }\OperatorTok{==}\StringTok{ "east"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Type, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"prop"}\NormalTok{)}
+
+\NormalTok{boot_east <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Region }\OperatorTok{==}\StringTok{ "east"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Type, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"bootstrap"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"prop"}\NormalTok{) }
+
+\NormalTok{ci_east <-}\StringTok{ }\NormalTok{boot_east }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_confidence_interval}\NormalTok{(}\DataTypeTok{type =} \StringTok{"se"}\NormalTok{, }\DataTypeTok{point_estimate =}\NormalTok{ prop_east)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Using `level = 0.95` to compute confidence interval.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prop_east}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 0.444
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci_east}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   lower_ci upper_ci
+##      <dbl>    <dbl>
+## 1    0.397    0.492
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# west}
+\NormalTok{prop_west <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Region }\OperatorTok{==}\StringTok{ "west"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Type, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"prop"}\NormalTok{)}
+
+\NormalTok{boot_west <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Region }\OperatorTok{==}\StringTok{ "west"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Type, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"bootstrap"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"prop"}\NormalTok{) }
+
+\NormalTok{ci_west <-}\StringTok{ }\NormalTok{boot_west }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_confidence_interval}\NormalTok{(}\DataTypeTok{type =} \StringTok{"se"}\NormalTok{, }\DataTypeTok{point_estimate =}\NormalTok{ prop_west)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Using `level = 0.95` to compute confidence interval.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prop_west}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 0.543
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci_west}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   lower_ci upper_ci
+##      <dbl>    <dbl>
+## 1    0.488    0.598
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct Bootstrap Distributions}
+
+\CommentTok{#boot_dist <- df_two %>% }
+\CommentTok{#  specify(response = Type, success = "disk") %>% }
+\CommentTok{#  generate(reps=1000, type="bootstrap") %>% }
+\CommentTok{#  calculate(stat = "prop")}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{hypothesis-testing}{%
+\subparagraph{Hypothesis testing}\label{hypothesis-testing}}
+
+Now answer the question, ``Do the proportions of stars with disks differ
+with region?'' Formulate a null and alterntive hypothesis, calculate a
+test statistic and a p-value and then make a conclusion about your
+hypotheis.
+
+We will formulate our hypotheses as: \$\$
+\textbackslash{}begin\{aligned\} H\_\{0\} \&: p\_\{east\} - p\_\{west\}
+= 0 \textbackslash{} H\_\{A\} \&: p\_\{east\} - p\_\{west\} \ne 0
+
+\textbackslash{}end\{aligned\} \$\$
+
+We can calculate a \(z-score\) test statistic to test this hypothesis:
+\[
+\begin{aligned}
+z & = \frac{\hat{p_{east}} - \hat{p_{west}} - 0}{\sqrt{\frac{\hat{p_{east}}(1-\hat{p_{east}})}{n_{east}} + 
+    \frac{\hat{p_{west}}(1-\hat{p_{west}})}{n_{west}}}} \\
+z & = \frac{0.44 - 0.54 - 0}{\sqrt{\frac{0.44(1-0.44)}{432} + 
+    \frac{0.54(1-0.54)}{293}}} \\
+z & = -2.66
+\end{aligned}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{z_score <-}\StringTok{ }\NormalTok{(}\FloatTok{0.44} \OperatorTok{-}\StringTok{ }\FloatTok{0.54} \OperatorTok{-}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{/}\StringTok{ }\KeywordTok{sqrt}\NormalTok{( (}\FloatTok{0.44}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\FloatTok{-0.44}\NormalTok{)}\OperatorTok{/}\DecValTok{432}\NormalTok{) }\OperatorTok{+}\StringTok{ }\NormalTok{(}\FloatTok{0.54}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\FloatTok{-0.54}\NormalTok{)}\OperatorTok{/}\DecValTok{293}\NormalTok{))}
+
+\NormalTok{z_score}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -2.655453
+\end{verbatim}
+
+Now that we have a z-score, we can calculate a p-value. Our hypotheses
+call for a two-sided test, so:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value =}\StringTok{ }\DecValTok{2} \OperatorTok{*}\StringTok{ }\KeywordTok{pnorm}\NormalTok{(}\DataTypeTok{q=}\OperatorTok{-}\FloatTok{2.66}\NormalTok{, }\DataTypeTok{mean=}\DecValTok{0}\NormalTok{, }\DataTypeTok{sd=}\DecValTok{1}\NormalTok{)}
+
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.007814065
+\end{verbatim}
+
+\hypertarget{computational-method-with-infer-1}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer-1}}
+
+Using infer we will generate the null distribution using the permutation
+method. Two appropriate test statistics are, 1) the difference in
+proportions, 2) a z-score. First calculating a z-score.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test_stat <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"z"}\NormalTok{, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"east"}\NormalTok{,}\StringTok{"west"}\NormalTok{))}
+
+\NormalTok{test_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 -2.60
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{hypothesise}\NormalTok{(}\DataTypeTok{null=}\StringTok{"independence"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"permute"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"z"}\NormalTok{, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"east"}\NormalTok{,}\StringTok{"west"}\NormalTok{))}
+
+\NormalTok{p_value <-}\StringTok{ }\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_p_value}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{test_stat, }\DataTypeTok{direction=}\StringTok{"two-sided"}\NormalTok{)}
+
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   p_value
+##     <dbl>
+## 1    0.02
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }\KeywordTok{visualise}\NormalTok{(}\DataTypeTok{obs_stat =}\NormalTok{ test_stat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `visualize()` should no longer be used to plot a p-value.
+## Arguments `obs_stat`, `obs_stat_color`, `pvalue_fill`, and `direction` are
+## deprecated. Use `shade_p_value()` instead.
+\end{verbatim}
+
+\includegraphics{inference_exam_prep_files/figure-latex/unnamed-chunk-9-1.pdf}
+Now we will use the difference in proportions as the test statistic.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test_stat <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"diff in props"}\NormalTok{, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"east"}\NormalTok{,}\StringTok{"west"}\NormalTok{))}
+
+\NormalTok{test_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##      stat
+##     <dbl>
+## 1 -0.0982
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region, }\DataTypeTok{success =} \StringTok{"disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{hypothesise}\NormalTok{(}\DataTypeTok{null=}\StringTok{"independence"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"permute"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"diff in props"}\NormalTok{, }\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"east"}\NormalTok{,}\StringTok{"west"}\NormalTok{))}
+
+\NormalTok{p_value <-}\StringTok{ }\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_p_value}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{test_stat, }\DataTypeTok{direction=}\StringTok{"two-sided"}\NormalTok{)}
+
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   p_value
+##     <dbl>
+## 1   0.014
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }\KeywordTok{visualise}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{test_stat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `visualize()` should no longer be used to plot a p-value.
+## Arguments `obs_stat`, `obs_stat_color`, `pvalue_fill`, and `direction` are
+## deprecated. Use `shade_p_value()` instead.
+\end{verbatim}
+
+\includegraphics{inference_exam_prep_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+This p-value is quite small, and is strong evidence to reject the null
+hypothesis. Therefore, we conclude that the proportion of stars with
+disks differs between the ``east'' and ``west'' regions.
+
+\hypertarget{more-than-two-categories}{%
+\subsubsection{More than two
+Categories}\label{more-than-two-categories}}
+
+\hypertarget{confidence-intervals-1}{%
+\subparagraph{Confidence Intervals}\label{confidence-intervals-1}}
+
+Does it make sense to calculate a confidence interval when there is more
+than one category?
+
+\hypertarget{hypothesis-testing-1}{%
+\subparagraph{Hypothesis testing}\label{hypothesis-testing-1}}
+
+We are still asking the question, ``Is disk proportion related to
+Region''. Our null hypothesis is that disk proportion is independent of
+region and thus our alternative hypothesis is that disk proportion is
+dependent on region.
+
+We will formulate our hypotheses as: \[
+\begin{aligned}
+H_{0} &: p_{east}  = p_{west} = p_{halo}  \\
+H_{A} &: at~least~one~p~is~different
+\end{aligned}
+\]
+
+Approximationb with Probability Models
+
+We can use the \(\Chi^{2}\) distribution to test this hypothesis. First
+lets look at the two way table.
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+counts & east & west & halo & total\tabularnewline
+\midrule
+\endhead
+disk & 192 & 159 & 507 & 858\tabularnewline
+no disk & 240 & 134 & 929 & 1303\tabularnewline
+total & 432 & 293 & 1436 & 2161\tabularnewline
+\bottomrule
+\end{longtable}
+
+We can estimate the number of expected counts in any cell using the
+following: \$\$
+
+Expected\_\{i,j\} = \frac{n_{row~i} \times n_{column~j} }{ table~total }
+
+\$\$ Our table of expected counts is then
+
+\begin{longtable}[]{@{}lllll@{}}
+\toprule
+\begin{minipage}[b]{0.17\columnwidth}\raggedright
+counts\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+east\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+west\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+halo\strut
+\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright
+total\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+disk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{858 \times 432}{2161}\) = 171.5\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{858 \times 293}{2161}\) = 116.3\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{858 \times 1436}{2161}\) = 570.2\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+858\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+no disk\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{1303 \times 432}{2161}\) = 260.5\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{1303 \times 293}{2161}\) = 176.7\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+\(\frac{1303 \times 1436}{2161}\) = 865.9\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+1303\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.17\columnwidth}\raggedright
+total\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+432\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+293\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+1436\strut
+\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright
+2161\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+To calculate the \(\Chi^{2}\) test statistic, we first calculate a
+z-score for each cell.\\
+\[
+\begin{aligned}
+z & = \frac{observed~count - null~count}{Standard~Error} \\
+z & = \frac{observed~count - null~count}{\sqrt{null~count}}
+\end{aligned}
+\] Then each of these terms are squared and added together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{chi_sq_stat <-}\StringTok{ }\NormalTok{( (}\DecValTok{192} \OperatorTok{-}\StringTok{ }\FloatTok{171.5}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{171.5}\NormalTok{) )}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }
+\StringTok{          }\NormalTok{( (}\DecValTok{159} \OperatorTok{-}\StringTok{ }\FloatTok{116.3}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{116.3}\NormalTok{) )}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }
+\StringTok{          }\NormalTok{( (}\DecValTok{507} \OperatorTok{-}\StringTok{ }\FloatTok{570.2}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{570.2}\NormalTok{) )}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }
+\StringTok{          }\NormalTok{( (}\DecValTok{240} \OperatorTok{-}\StringTok{ }\FloatTok{260.5}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{260.5}\NormalTok{) )}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }
+\StringTok{          }\NormalTok{( (}\DecValTok{134} \OperatorTok{-}\StringTok{ }\FloatTok{176.7}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{176.7}\NormalTok{) )}\OperatorTok{^}\DecValTok{2} \OperatorTok{+}\StringTok{ }
+\StringTok{          }\NormalTok{( (}\DecValTok{929} \OperatorTok{-}\StringTok{ }\FloatTok{865.9}\NormalTok{)}\OperatorTok{/}\KeywordTok{sqrt}\NormalTok{(}\FloatTok{865.9}\NormalTok{) )}\OperatorTok{^}\DecValTok{2}
+
+\NormalTok{chi_sq_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 41.66293
+\end{verbatim}
+
+If \(R\) is the number of categories in the response variable, and \(C\)
+is the number of categories in the explanetory variable, then the
+degrees of freedom for a \(\Chi^{2}\) test are given by: \[
+\begin{aligned}
+df & = (R - 1) \times (C-1) \\
+df & = (2 - 1) \times (3 -1) \\
+df & = 1 \times 2 \\
+df & = 2
+\end{aligned}
+\]
+
+We can now calculate the p-value
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value <-}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(}\DataTypeTok{q=}\NormalTok{chi_sq_stat,}\DataTypeTok{df=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 8.974491e-10
+\end{verbatim}
+
+We can use the R function \texttt{chisq.test()} to perform a hypothesis
+test assuming the \(\Chi^{2}\) probability model.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_three <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(Type,Region) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{fct_drop}\NormalTok{(Type))}
+
+\KeywordTok{chisq.test}\NormalTok{(}\KeywordTok{table}\NormalTok{(df_three}\OperatorTok{$}\NormalTok{Type, df_three}\OperatorTok{$}\NormalTok{Region))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  table(df_three$Type, df_three$Region)
+## X-squared = 41.609, df = 2, p-value = 9.22e-10
+\end{verbatim}
+
+\hypertarget{computational-method-with-infer-2}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer-2}}
+
+\textbf{Note:} \texttt{fct\_drop()} is used here to remove the empty
+``envelope'' category.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(Type,Region) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Region,Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{count=}\KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 3
+## # Groups:   Region [3]
+##   Region Type    count
+##   <chr>  <fct>   <int>
+## 1 east   disk      192
+## 2 east   no disk   240
+## 3 halo   disk      507
+## 4 halo   no disk   929
+## 5 west   disk      159
+## 6 west   no disk   134
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_three <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(Type,Region) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{fct_drop}\NormalTok{(Type))}
+
+\NormalTok{test_stat <-}\StringTok{ }\NormalTok{df_three }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region) }\OperatorTok{%>%}
+\StringTok{  }\CommentTok{#hypothesize(null = "independence") %>%}
+\StringTok{  }\CommentTok{#generate(reps = 1000, type = "permute") %>%}
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"Chisq"}\NormalTok{)}
+
+
+\NormalTok{test_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1  41.6
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist <-}\StringTok{ }\NormalTok{df_three }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Type }\OperatorTok{~}\StringTok{ }\NormalTok{Region) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{hypothesize}\NormalTok{(}\DataTypeTok{null =} \StringTok{"independence"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps =} \DecValTok{1000}\NormalTok{, }\DataTypeTok{type =} \StringTok{"permute"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"Chisq"}\NormalTok{)}
+
+\NormalTok{null_dist}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1,000 x 2
+##    replicate  stat
+##        <int> <dbl>
+##  1         1 0.257
+##  2         2 9.17 
+##  3         3 0.228
+##  4         4 4.06 
+##  5         5 0.390
+##  6         6 0.824
+##  7         7 9.27 
+##  8         8 0.691
+##  9         9 5.19 
+## 10        10 1.67 
+## # ... with 990 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value <-}\StringTok{ }\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_p_value}\NormalTok{(}\DataTypeTok{obs_stat =}\NormalTok{ test_stat, }\DataTypeTok{direction=}\StringTok{"greater"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Please be cautious in reporting a p-value of 0. This result is
+## an approximation based on the number of `reps` chosen in the `generate()`
+## step. See `?get_p_value()` for more information.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   p_value
+##     <dbl>
+## 1       0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }\KeywordTok{visualise}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{test_stat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `visualize()` should no longer be used to plot a p-value.
+## Arguments `obs_stat`, `obs_stat_color`, `pvalue_fill`, and `direction` are
+## deprecated. Use `shade_p_value()` instead.
+\end{verbatim}
+
+\includegraphics{inference_exam_prep_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+As we see, regardless of method used, the test statistic is far into the
+wings of the null distribution. Therefore, we consider that to be stron
+evidence to reject the null hypothesis that disk proportion and region
+are independent. We conclude then, that disk proprtion depends on which
+region a star is in.
+
+\hypertarget{problem-2}{%
+\subsection{Problem 2}\label{problem-2}}
+
+We are now interested in exploring whether there are difference in the
+type of light emitted from each \texttt{Type} of star. We will do this
+by creating a new \emph{color index} composed of the measurements made
+in certain Bands. To do this create a new variable called \texttt{Color}
+made of the difference \texttt{Band8}-\texttt{Band9}. You will want to
+remove \texttt{NA}'s from this variable.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{exploratory-data-analysis-1}{%
+\subsubsection{Exploratory Data
+Analysis}\label{exploratory-data-analysis-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_colors <-}\StringTok{ }\NormalTok{df }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Color =}\NormalTok{ Band8 }\OperatorTok{-}\StringTok{ }\NormalTok{Band9) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\CommentTok{#mutate(Color = Band1 - Band2) %>% }
+\StringTok{  }\KeywordTok{drop_na}\NormalTok{(Color)}
+
+
+\CommentTok{# Boxplot of Index as function of Type (Disk or No Disk)}
+\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\CommentTok{#drop_na(Band3,Band4,Band5,Band6,Band7,Band8,Band9) %>% }
+\StringTok{  }\CommentTok{#mutate(Color1 = Band3-Band4,}
+\StringTok{  }\CommentTok{#       Color2 = Band6 - Band7, }
+\StringTok{  }\CommentTok{#       Color3 = Band8 - Band9) %>% }
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{Type, }\DataTypeTok{y=}\NormalTok{Color)) }\OperatorTok{+}
+\StringTok{    }\KeywordTok{geom_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{inference_exam_prep_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_color_table <-}\StringTok{ }\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{mean =} \KeywordTok{mean}\NormalTok{(Color),}\DataTypeTok{sd=}\KeywordTok{sd}\NormalTok{(Color),}\DataTypeTok{count=}\KeywordTok{n}\NormalTok{())}
+  
+\NormalTok{df_color_table}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 4
+##   Type       mean    sd count
+##   <fct>     <dbl> <dbl> <int>
+## 1 envelope 1.14   0.152     5
+## 2 disk     0.673  0.254   833
+## 3 no disk  0.0266 0.229  1206
+\end{verbatim}
+
+\hypertarget{two-categories-1}{%
+\subsubsection{Two Categories}\label{two-categories-1}}
+
+\hypertarget{confidence-intervals-2}{%
+\paragraph{Confidence intervals}\label{confidence-intervals-2}}
+
+First, we just consider the regions ``disk'' and ``no disk'', and for
+eash type estimate the mean value of the color index and determine
+\(95\%\) confidence intervals.
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\hypertarget{approximation-with-probability-models-1}{%
+\subparagraph{Approximation with probability
+models}\label{approximation-with-probability-models-1}}
+
+For a single mean point estimate: \[
+\begin{aligned}
+\bar{x} & \pm MOE \\
+\bar{x} & \pm t_{df}^{*} \times \frac{s}{\sqrt{n}}
+\end{aligned}
+\] The ``disk'' stars have a mean \texttt{Color} of 0.6732893 with n =
+833 observations, a sample standard deviation, s = 0.2537412 and df =
+n-1 = 832 degrees of freedom. For a sample of this size
+\(t_{df}^{*} \simeq z^{*}\). \[
+\begin{aligned}
+\bar{x_{disk}} & \pm z^{*} \times \frac{s}{\sqrt{n}} \\
+0.6732893 & \pm 1.96 \times \frac{0.2537412}{\sqrt{833}} \\
+0.6732893 & \pm 0.02 
+\end{aligned}
+\]
+
+R can be used as a calculator.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FloatTok{1.96} \OperatorTok{*}\StringTok{ }\NormalTok{df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"sd"}\NormalTok{] }\OperatorTok{/}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           sd
+## 1 0.01723156
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#1.96 *  0.25 / sqrt(833) # If Color = Band8 - Band9}
+\end{Highlighting}
+\end{Shaded}
+
+The ``no disk'' stars have a mean \texttt{Color} of 0.0265755 with n =
+1206 observations, a sample standard deviation, s = 0.2294564 and df =
+n-1 = 1205 degrees of freedom. Again, for a sample of this size
+\(t_{df}^{*} \simeq z^{*}\). \[
+\begin{aligned}
+\bar{x_{disk}} & \pm z^{*} \times \frac{s}{\sqrt{n}} \\
+0.0265755 & \pm 1.96 \times \frac{0.2294564}{\sqrt{1206}} \\
+0.0265755 & \pm 0.01
+\end{aligned}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FloatTok{1.96} \OperatorTok{*}\StringTok{ }\NormalTok{df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"sd"}\NormalTok{] }\OperatorTok{/}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           sd
+## 1 0.01295038
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FloatTok{1.96} \OperatorTok{*}\StringTok{  }\FloatTok{0.23} \OperatorTok{/}\StringTok{ }\KeywordTok{sqrt}\NormalTok{(}\DecValTok{1206}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01298106
+\end{verbatim}
+
+\hypertarget{computational-method-with-infer-3}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer-3}}
+
+We will use \texttt{infer} to construct bootstrap estimations of the
+sampling distribution.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# First }
+ 
+\NormalTok{df_two <-}\StringTok{ }\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{fct_drop}\NormalTok{(Type))}
+
+\NormalTok{df_two}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2,039 x 28
+##       RA   Dec Type   Band1 Band2 Band3 Band4 Band5 Band6 Band7 Band8 Band9
+##    <dbl> <dbl> <fct>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+##  1  344.  62.6 no di~  15.1  13.3  12.1  11.6  11.4  11.2  11.2  11.2  11.2
+##  2  344.  62.8 no di~  17.6  15.2  13.8  13.2  12.9  12.7  12.7  12.6  12.7
+##  3  344.  62.7 no di~  15.9  13.8  12.0  11.2  10.9  10.8  10.8  10.7  10.7
+##  4  344.  62.6 no di~  20.2  17.1  15.0  14.1  13.7  13.4  13.4  13.2  13.3
+##  5  344.  62.5 no di~  18.8  16.1  14.1  13.2  12.9  12.7  12.6  12.6  12.5
+##  6  344.  62.4 no di~  19.6  16.4  14.2  13.3  13.0  12.6  12.6  12.4  11.8
+##  7  344.  62.6 no di~  22.2  18.1  15.8  14.8  14.3  14.0  13.9  14.0  13.9
+##  8  344.  62.5 no di~  19.4  15.9  13.2  12.0  11.6  11.2  11.2  11.1  11.2
+##  9  344.  62.4 no di~  21.2  17.5  14.7  13.5  13.1  12.7  12.7  12.7  12.6
+## 10  344.  62.5 no di~  20.1  16.9  14.6  13.5  13.2  13.0  12.9  12.9  13.0
+## # ... with 2,029 more rows, and 16 more variables: Band10 <dbl>,
+## #   Dust <dbl>, Xray <chr>, parallax <dbl>, parallax_error <dbl>,
+## #   pmra <dbl>, pmra_error <dbl>, pmdec <dbl>, pmdec_error <dbl>,
+## #   teff_val <dbl>, a_g_val <dbl>, radius_val <dbl>, lum_val <dbl>,
+## #   Distance <dbl>, Region <chr>, Color <dbl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# disk}
+\NormalTok{mean_disk <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Color) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"mean"}\NormalTok{)}
+
+\NormalTok{boot_disk <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Color) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"bootstrap"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"mean"}\NormalTok{) }
+
+\NormalTok{ci_disk <-}\StringTok{ }\NormalTok{boot_disk }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_confidence_interval}\NormalTok{(}\DataTypeTok{type =} \StringTok{"se"}\NormalTok{, }\DataTypeTok{point_estimate =}\NormalTok{ mean_disk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Using `level = 0.95` to compute confidence interval.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean_disk}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 0.673
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci_disk}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   lower_ci upper_ci
+##      <dbl>    <dbl>
+## 1    0.656    0.691
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# no disk}
+\NormalTok{mean_nodisk <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Color) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"mean"}\NormalTok{)}
+
+\NormalTok{boot_nodisk <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(}\DataTypeTok{response =}\NormalTok{ Color) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"bootstrap"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"mean"}\NormalTok{) }
+
+\NormalTok{ci_nodisk <-}\StringTok{ }\NormalTok{boot_nodisk }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_confidence_interval}\NormalTok{(}\DataTypeTok{type =} \StringTok{"se"}\NormalTok{, }\DataTypeTok{point_estimate =}\NormalTok{ mean_nodisk)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Using `level = 0.95` to compute confidence interval.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{mean_nodisk}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##     stat
+##    <dbl>
+## 1 0.0266
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ci_nodisk}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   lower_ci upper_ci
+##      <dbl>    <dbl>
+## 1   0.0129   0.0402
+\end{verbatim}
+
+\hypertarget{hypothesis-testing-2}{%
+\subparagraph{Hypothesis testing}\label{hypothesis-testing-2}}
+
+Now answer the question, ``Does \texttt{Color} depend on
+\texttt{Type}?'' Formulate a null and alterntive hypothesis, calculate a
+test statistic and a p-value and then make a conclusion about your
+hypotheis.
+
+We will formulate our hypotheses as: \$\$
+\textbackslash{}begin\{aligned\} H\_\{0\} \&: \mu\emph{\{disk\} -
+\mu}\{no\textasciitilde{}disk\} = 0 \textbackslash{} H\_\{A\} \&:
+\mu\emph{\{disk\} - \mu}\{no\textasciitilde{}disk\} \ne 0
+
+\textbackslash{}end\{aligned\} \$\$
+
+\hypertarget{approximation-with-probability-models-2}{%
+\subparagraph{Approximation with probability
+models}\label{approximation-with-probability-models-2}}
+
+We will first approximate the null distribution using a t-distribution.
+
+\[
+\begin{aligned}
+t & = \frac{ \bar{x_{disk}}-\bar{x_{no~disk}} - 0 }{\sqrt{ \frac{s_{disk}^{2}}{n_{disk}} +
+  \frac{s_{no~disk}^{2}}{n_{no~disk}}  }} \\
+t & = \frac{ \bar{0.6732893}-\bar{0.0265755} - 0 }{\sqrt{ \frac{0.2294564^{2}}{833} +
+  \frac{0.2294564^{2}}{1206}  }} \\
+0.03 & \pm 0.01
+\end{aligned}
+\]
+
+Using R as a calculator:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{t_stat <-}\StringTok{ }\NormalTok{(df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"mean"}\NormalTok{] }\OperatorTok{-}\StringTok{ }\NormalTok{df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"mean"}\NormalTok{]) }\OperatorTok{/}\StringTok{ }\KeywordTok{sqrt}\NormalTok{ ( (df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"sd"}\NormalTok{]}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{] }\OperatorTok{+}\StringTok{ }\NormalTok{(df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"sd"}\NormalTok{]}\OperatorTok{^}\DecValTok{2}\NormalTok{)}\OperatorTok{/}\NormalTok{df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{] ) }
+
+\NormalTok{df <-}\StringTok{ }\KeywordTok{min}\NormalTok{(df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "no disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{],df_color_table[df_color_table}\OperatorTok{$}\NormalTok{Type }\OperatorTok{==}\StringTok{ "disk"}\NormalTok{,}\StringTok{"count"}\NormalTok{]) }\OperatorTok{-}\StringTok{ }\DecValTok{1}
+
+\CommentTok{#df}
+\NormalTok{t_stat <-}\StringTok{ }\NormalTok{t_stat }\OperatorTok{%>%}\StringTok{ }\KeywordTok{pull}\NormalTok{()}
+
+\NormalTok{t_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 58.80447
+\end{verbatim}
+
+And \texttt{pt()} can be used to calculate th p-value:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value <-}\StringTok{ }\DecValTok{2}\OperatorTok{*}\NormalTok{(}\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pt}\NormalTok{(}\DataTypeTok{q=}\NormalTok{t_stat,df))}
+
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+Another approach is to use the R function \texttt{t.test()}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df_two <-}\StringTok{ }\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Type }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{,}\StringTok{"no disk"}\NormalTok{)) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Type =} \KeywordTok{fct_drop}\NormalTok{(Type))}
+
+\KeywordTok{t.test}\NormalTok{(Color }\OperatorTok{~}\StringTok{ }\NormalTok{Type,}\DataTypeTok{data=}\NormalTok{df_two)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  Color by Type
+## t = 58.804, df = 1669.5, p-value < 2.2e-16
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.6251431 0.6682846
+## sample estimates:
+##    mean in group disk mean in group no disk 
+##            0.67328932            0.02657546
+\end{verbatim}
+
+\hypertarget{computational-method-with-infer-4}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer-4}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{test_stat <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Color }\OperatorTok{~}\StringTok{ }\NormalTok{Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"t"}\NormalTok{,}\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{, }\StringTok{"no disk"}\NormalTok{))}
+
+\NormalTok{test_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1  58.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist <-}\StringTok{ }\NormalTok{df_two }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Color }\OperatorTok{~}\StringTok{ }\NormalTok{Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{hypothesise}\NormalTok{(}\DataTypeTok{null=}\StringTok{"independence"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"permute"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"t"}\NormalTok{,}\DataTypeTok{order =} \KeywordTok{c}\NormalTok{(}\StringTok{"disk"}\NormalTok{, }\StringTok{"no disk"}\NormalTok{))}
+
+\NormalTok{p_value <-}\StringTok{ }\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_p_value}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{test_stat, }\DataTypeTok{direction=}\StringTok{"two-sided"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Please be cautious in reporting a p-value of 0. This result is
+## an approximation based on the number of `reps` chosen in the `generate()`
+## step. See `?get_p_value()` for more information.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   p_value
+##     <dbl>
+## 1       0
+\end{verbatim}
+
+\hypertarget{more-than-two-categories-1}{%
+\subsubsection{More than two
+Categories}\label{more-than-two-categories-1}}
+
+We now consider all three types: ``envelope'', ``disk'' and ``no disk''.
+
+We will formulate our hypotheses as: \[
+\begin{aligned}
+H_{0} &: \mu_{disk}  = \mu_{no~disk} = \mu_{envelope}  \\
+H_{A} &: at~least~one~\mu~is~different
+\end{aligned}
+\]
+
+Approximationb with Probability Models
+
+\hypertarget{computational-method-with-infer-5}{%
+\subparagraph{Computational method with
+Infer}\label{computational-method-with-infer-5}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f_stat <-}\StringTok{ }\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Color }\OperatorTok{~}\StringTok{ }\NormalTok{Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"F"}\NormalTok{)}
+
+\NormalTok{f_stat}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##    stat
+##   <dbl>
+## 1 1827.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{null_dist <-}\StringTok{ }\NormalTok{df_colors }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{specify}\NormalTok{(Color }\OperatorTok{~}\StringTok{ }\NormalTok{Type) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{hypothesise}\NormalTok{(}\DataTypeTok{null=}\StringTok{"independence"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{generate}\NormalTok{(}\DataTypeTok{reps=}\DecValTok{1000}\NormalTok{,}\DataTypeTok{type=}\StringTok{"permute"}\NormalTok{) }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{calculate}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"F"}\NormalTok{)}
+
+
+\NormalTok{p_value <-}\StringTok{ }\NormalTok{null_dist }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{get_p_value}\NormalTok{(}\DataTypeTok{obs_stat=}\NormalTok{f_stat,}\DataTypeTok{direction=}\StringTok{"greater"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Please be cautious in reporting a p-value of 0. This result is
+## an approximation based on the number of `reps` chosen in the `generate()`
+## step. See `?get_p_value()` for more information.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p_value}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   p_value
+##     <dbl>
+## 1       0
+\end{verbatim}
+
+Check conditions
+
+
+\end{document}

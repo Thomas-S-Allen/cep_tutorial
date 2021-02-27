@@ -1,0 +1,21 @@
+# cep_tutorial
+A data science tutorial using observational astronomy data of the Cep OB3b young cluster.
+
+This tutorial will be divided into (hopefully) many parts that will cover a
+range of ideas and techniques used in astronomy, statistics, data science,
+etc.  
+
+* Concepts in Astronomy
+    * Star Formation 
+        * Interpreting Color-Color and Color-Magnitude plots
+        * Stages of star formation and how they are observed
+    * Planetary Science
+    * Parallax (Gaia)
+* Statistical Methods
+    * Linear Discriminant Classifications
+* Data Science techniques
+    * Accessing Astronomical Data via web services
+    * Rmarkdown with R and python
+    * vim and tmux setup with R and Python
+
+

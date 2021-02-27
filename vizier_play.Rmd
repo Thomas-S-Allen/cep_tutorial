@@ -1,0 +1,84 @@
+---
+title: "Vizier Play"
+author: "Tom Allen"
+date: "8/5/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(httr)
+library(tidyverse)
+library(xml2)
+#source("astro_funcs.R")
+```
+
+```{r}
+
+vizier_response_yso <- httr::GET('http://vizier.cfa.harvard.edu/viz-bin/votable',query=list('-source'="J/ApJ/750/125/ysos",'-out.add'="_RAJ,_DEJ"))
+vizier_response_yso
+
+vizier_response_2mass <- httr::GET('http://vizier.cfa.harvard.edu/viz-bin/votable',query=list('-source'="II/246/out", '-c'="HD 217086
+", '-c.rd'=".5",'-out.add'="_RAJ,_DEJ"))
+
+vizier_response_2mass
+```
+
+```{r}
+
+df_yso <- VOTable_to_dataframe(vizier_response_yso)
+
+head(df_yso,n=20)
+```
+
+```{r}
+df_2mass <- VOTable_to_dataframe(vizier_response_2mass)
+
+head(df_2mass)
+```
+
+```{r}
+
+
+df2 <- df_yso %>% filter(Cl=="II" & `_RAJ2000` > 343.86)
+df2
+
+df2m <- df_2mass %>% filter(Jmag==13.63)
+
+df2m
+```
+```{r}
+```
+
+```{r}
+
+df_2mass %>% ggplot(aes(x=`_RAJ2000`,y=`_DEJ2000`)) +
+  geom_point() + theme(axis.text.y=element_blank(),axis.text.x=element_blank()) +
+  geom_point(data=df2,aes(x=`RAJ2000`,y=`DEJ2000`),color='red')
+```
+```{r}
+vizier_response_yso <- httr::GET('http://vizier.cfa.harvard.edu/viz-bin/votable',query=list('-source'="J/ApJ/750/125/ysos,II/246/out",'-c'="HD 217086",'-c.rd'=".5",'-out.add'="_RAJ,_DEJ",'-x.rs'="2"))
+vizier_response_yso
+```
+
+
+```{r}
+df_yso <- VOTable_to_dataframe(vizier_response_yso)
+
+head(df_yso)
+```
+
+```{r}
+View(df_yso)
+
+```
+
+```{r}
+library(xml2)
+dat <- read_xml(vizier_response_yso)
+dat <- xml_ns_strip(dat)
+
+dat_path <- dat %>% xml_find_all('//*') %>% xml_path()
+dat_path
+```
+

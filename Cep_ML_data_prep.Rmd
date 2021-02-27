@@ -1,0 +1,134 @@
+---
+title: "Data Prep for Cep OB3b ML Projects"
+author: "Thomas Allen"
+date: "9/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(infer)
+```
+
+
+
+```{r}
+
+within_radius_of_point <- function(df,point,radius) {
+  
+  # df : dataframe with RA and Dec columns (Decimal Degrees)
+  
+  # point : 2-element vector with center point RA and Dec (Decimal Degrees)
+  
+  # radius : radius to search within (Arcseconds)
+  
+  
+df <-  df %>% 
+  
+  mutate(new_column_distance = sqrt( ((point[1] - RA) * 3600. * cos((pi/180.)*Dec))^2   +  ((Dec-point[2]) * 3600.)^2)) %>% 
+  mutate(new_column = if_else(new_column_distance < radius,"yes", "no"))
+  
+df
+  
+}
+
+```
+
+
+```{r}
+
+# Should have the actual queries in here to make it fully reporoducible
+
+df <- read_csv("~/Websites/Working/thomas-s-allen 2/cep_tutorial/data/J.ApJ.750.125.ysos_2MASS_GAIA_raw.csv")
+
+nrow(df)
+
+
+#east_center <- c(344.2083, 62.6656)
+east_center <- c(344.2060000, 62.6654278)
+west_center <- c(343.4625, 62.5936)
+
+radius <- 300.
+
+df %>% distinct(Note)
+
+parallax_conversion <- 10^3 # milli arcseconds to arcseconds
+
+cols_to_keep <- c(
+                  "RA",
+                  "Dec",
+                  "Type",
+                  "V",
+                  "I",
+                  "J",
+                  "H",
+                  "K",
+                  "S3.6",
+                  "S4.5",
+                  "S5.8",
+                  "S8.0",
+                  "S24",
+                  "Dust",
+                  "Xray",
+                  "parallax",
+                  "parallax_error",
+                  "pmra",
+                  "pmra_error",
+                  "pmdec",
+                  "pmdec_error",
+                  "teff_val",
+                  "a_g_val",
+                  "radius_val",
+                  "lum_val"
+                  )
+
+
+df <- df %>%
+  mutate(`V-I` = Vmag-`V-I`) %>% 
+  mutate(Cl = fct_recode(Cl,"no disk"="III","disk"="II","disk"="TD","envelope"="I")) %>% 
+  mutate(Note = case_when(Note=="x-ray" ~ "yes",
+                            is.na(Note) ~ "no")) %>% 
+  rename(
+    RA = `_RAJ2000`,
+    Dec = `_DEJ2000`,
+    Type = Cl,
+    V = Vmag,
+    I = `V-I`,
+    J = Jmag,
+    H = Hmag,
+    K = Ksmag,
+    S3.6 = `[3.6]`,
+    S4.5 = `[4.5]`,
+    S5.8 = `[5.8]`,
+    S8.0 = `[8.0]`,
+    S24 = `[24]`,
+    Xray = Note,
+    Dust = AKs
+  ) %>% 
+  select(cols_to_keep) %>% 
+  #filter(Type %in% c("Disk","No Disk")) %>% 
+  mutate(Distance = 1/ (parallax/parallax_conversion)) %>% 
+  filter(Distance > 0,
+         Distance < 10000) %>% 
+  within_radius_of_point(east_center,radius) %>% 
+  mutate(east_cluster = new_column) %>% 
+  select(-new_column) %>% 
+  within_radius_of_point(west_center,radius) %>% 
+  mutate(west_cluster = new_column) %>% 
+  select(-new_column) %>% 
+  mutate(Region = if_else(east_cluster=="yes","east",if_else(west_cluster=="yes","west","halo"))) %>% 
+  select(-new_column_distance,-east_cluster,-west_cluster) %>% 
+  mutate(Xray = case_when(is.na(Xray) ~ "yes",
+                            Xray=="no" ~ "no"))
+
+df
+
+
+save_path <- "~/Data/Astronomy/Cep_ML_Data.csv"
+
+write_csv(df, path=save_path)
+```
+
+
